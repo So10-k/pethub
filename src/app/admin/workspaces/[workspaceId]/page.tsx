@@ -16,6 +16,7 @@ export default async function AdminWorkspacePage({ params }: { params: { workspa
       owner: { select: { id: true, name: true, email: true } },
       members: { select: { id: true, name: true, email: true } },
       pets: { select: { id: true, name: true } },
+      customLogTypes: { select: { id: true, name: true, icon: true } },
     },
   })
   if (!ws) return notFound()
@@ -29,13 +30,54 @@ export default async function AdminWorkspacePage({ params }: { params: { workspa
 
   const allWorkspaces = await prisma.workspace.findMany({ select: { id: true, name: true } })
 
+  const isPremium = ws.plan === 'PREMIUM'
+  const planExpired = ws.planExpiresAt && new Date(ws.planExpiresAt) < new Date()
+
   return (
     <div className="portal-container">
       <div className="portal-card">
-        <h1 className="text-2xl font-semibold">{ws.name}</h1>
-        <p className="portal-muted text-sm mt-1">
-          Owner: {ws.owner.name || ws.owner.email} · {ws.owner.email} · ID: {ws.owner.id}
-        </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">{ws.name}</h1>
+            <p className="portal-muted text-sm mt-1">
+              Owner: {ws.owner.name || ws.owner.email} · {ws.owner.email} · ID: {ws.owner.id}
+            </p>
+          </div>
+          <span className={`px-3 py-1 rounded text-sm font-medium ${isPremium && !planExpired ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}`}>
+            {isPremium && !planExpired ? '⭐ PREMIUM' : 'FREE'}
+          </span>
+        </div>
+      </div>
+
+      <div className="portal-card mt-4">
+        <h2 className="portal-section-title">Subscription Management</h2>
+        <div className="mt-3 space-y-3">
+          <div className="text-sm">
+            <div className="portal-muted">Current Plan</div>
+            <div className="font-medium">{isPremium ? 'Premium' : 'Free'} {planExpired && '(Expired)'}</div>
+            {ws.planExpiresAt && (
+              <div className="text-xs portal-muted mt-1">
+                Expires: {new Date(ws.planExpiresAt).toLocaleDateString()}
+              </div>
+            )}
+          </div>
+          <form action={`/api/admin/workspaces/${ws.id}/plan`} method="post" className="flex gap-2">
+            <select name="plan" defaultValue={ws.plan} className="border rounded px-3 py-2 text-sm">
+              <option value="FREE">Free</option>
+              <option value="PREMIUM">Premium</option>
+            </select>
+            <input
+              type="date"
+              name="expiresAt"
+              defaultValue={ws.planExpiresAt ? new Date(ws.planExpiresAt).toISOString().split('T')[0] : ''}
+              placeholder="Expiration date"
+              className="border rounded px-3 py-2 text-sm"
+            />
+            <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white text-sm hover:bg-blue-700">
+              Update Plan
+            </button>
+          </form>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">

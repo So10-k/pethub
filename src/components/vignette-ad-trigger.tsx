@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react'
 
-export default function VignetteAdTrigger() {
+export default function VignetteAdTrigger({ isPremium }: { isPremium?: boolean }) {
   const [showAd, setShowAd] = useState(false)
 
   useEffect(() => {
+    // Don't show ads for premium users
+    if (isPremium) return
+
     // Get log count from localStorage
     const logCount = parseInt(localStorage.getItem('petLogCount') || '0', 10)
     const lastAdAt = parseInt(localStorage.getItem('lastAdAt') || '0', 10)
@@ -36,7 +39,7 @@ export default function VignetteAdTrigger() {
       // Reset flag after showing
       setTimeout(() => setShowAd(false), 1000)
     }
-  }, [])
+  }, [isPremium])
 
   return null
 }

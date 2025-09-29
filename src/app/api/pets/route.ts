@@ -25,7 +25,10 @@ export async function POST(req: Request) {
   if (!name || !species) return NextResponse.json({ error: 'Name and species required' }, { status: 400 })
 
   // Ensure a primary household (workspace) exists for user
-  let household = await prisma.workspace.findFirst({ where: { ownerId: userId } })
+  let household = await prisma.workspace.findFirst({ 
+    where: { ownerId: userId },
+    include: { pets: { select: { id: true } } },
+  })
   if (!household) {
     household = await prisma.workspace.create({
       data: {
@@ -33,7 +36,16 @@ export async function POST(req: Request) {
         ownerId: userId,
         members: { connect: { id: userId } },
       },
+      include: { pets: { select: { id: true } } },
     })
+  }
+
+  // Check pet limit for free users (3 pets max)
+  const isPremium = household.plan === 'PREMIUM' && (!household.planExpiresAt || new Date(household.planExpiresAt) > new Date())
+  if (!isPremium && household.pets.length >= 3) {
+    return NextResponse.json({ 
+      error: 'Free plan limited to 3 pets. Upgrade to Premium for unlimited pets!' 
+    }, { status: 403 })
   }
 
   const pet = await prisma.pet.create({
