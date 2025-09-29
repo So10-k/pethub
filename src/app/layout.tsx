@@ -39,8 +39,6 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <SessionProvider>
           <Header />
-          {/* Global portal banner */}
-          {/* @ts-expect-error Server Component */}
           <PortalBanner />
           <main className="min-h-screen">
             {children}
