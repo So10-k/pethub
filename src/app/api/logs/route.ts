@@ -44,5 +44,5 @@ export async function POST(req: Request) {
   const created = await prisma.petLog.create({
     data: { petId, userId, performedById: actorId, type: type as any, notes: notes || null, timestamp: ts },
   })
-  return NextResponse.json({ log: created })
+  return NextResponse.json({ log: created, showAd: true })
 }

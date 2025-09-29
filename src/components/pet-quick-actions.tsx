@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { incrementLogCount } from '@/components/vignette-ad-trigger'
 
 export default function PetQuickActions({ petId }: { petId: string }) {
   const router = useRouter()
@@ -22,6 +23,10 @@ export default function PetQuickActions({ petId }: { petId: string }) {
       setError(data?.error || 'Failed to log')
       return
     }
+    
+    // Increment log count for ad tracking
+    incrementLogCount()
+    
     setNotes('')
     startTransition(() => router.refresh())
   }
