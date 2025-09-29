@@ -52,6 +52,8 @@ model User {
   invitesCreated Invite[] @relation("InviteCreatedBy")
   invitesUsed    Invite[] @relation("InviteUsedBy")
   performedLogs  PetLog[] @relation("PerformedBy")
+  tickets       Ticket[]
+  ticketMessages TicketMessage[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -132,4 +134,43 @@ model Invite {
 enum Role {
   USER
   SUPERADMIN
+}
+
+model Ticket {
+  id          String         @id @default(cuid())
+  subject     String
+  description String
+  status      TicketStatus   @default(OPEN)
+  priority    TicketPriority @default(MEDIUM)
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  messages    TicketMessage[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model TicketMessage {
+  id        String   @id @default(cuid())
+  content   String
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_USER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }

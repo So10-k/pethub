@@ -28,9 +28,11 @@ export default async function Header() {
           <nav className="hidden sm:flex items-center gap-4 text-sm text-neutral-700">
             <Link href="/dashboard" className="hover:text-black">Dashboard</Link>
             {isSuperAdmin && <Link href="/admin" className="hover:text-black">Admin</Link>}
+            {isSuperAdmin && <Link href="/admin/tickets" className="hover:text-black">Tickets</Link>}
             {isOwner && <Link href="/members" className="hover:text-black">Members</Link>}
             {isOwner && <Link href="/invite" className="hover:text-black">Invite</Link>}
             {!hasWorkspace && !isOwner && <Link href="/join" className="hover:text-black">Join</Link>}
+            {userId && <Link href="/support" className="hover:text-black">Support</Link>}
           </nav>
           <PetSwitcher />
         </div>
