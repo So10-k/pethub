@@ -5,7 +5,7 @@ import { prisma } from './prisma'
 import bcrypt from 'bcryptjs'
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma) as any,
+  adapter: PrismaAdapter(prisma) as NextAuthOptions['adapter'],
   session: { strategy: 'jwt' },
   pages: {
     signIn: '/signin',
@@ -30,22 +30,22 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = (user as any).id
-        ;(token as any).role = (user as any).role
+        token.id = user.id
+        token.role = (user as { role?: string }).role
         return token
       }
       if (!('role' in token) && token?.id) {
         try {
           const dbUser = await prisma.user.findUnique({ where: { id: token.id as string }, select: { role: true } })
-          ;(token as any).role = dbUser?.role ?? 'USER'
+          token.role = dbUser?.role ?? 'USER'
         } catch {}
       }
       return token
     },
     async session({ session, token }) {
       if (session?.user && token?.id) {
-        ;(session.user as any).id = token.id as string
-        ;(session.user as any).role = (token as any).role ?? 'USER'
+        session.user.id = token.id as string
+        session.user.role = (token.role as 'USER' | 'SUPERADMIN') ?? 'USER'
       }
       return session
     },
