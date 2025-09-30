@@ -5,16 +5,15 @@ import { getToken } from 'next-auth/jwt'
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Skip maintenance check for these paths
+  // Only skip maintenance check for these critical paths
   const skipPaths = [
-    '/api/auth',
-    '/signin',
-    '/signup',
-    '/maintenance',
-    '/_next',
-    '/favicon.ico',
-    '/manifest.json',
-    '/icon-',
+    '/api/auth',           // Auth endpoints must work
+    '/api/maintenance',    // Maintenance status check
+    '/maintenance',        // The maintenance page itself
+    '/_next',              // Next.js internals
+    '/favicon.ico',        // Favicon
+    '/manifest.json',      // PWA manifest
+    '/icon-',              // App icons
   ]
 
   if (skipPaths.some(path => pathname.startsWith(path))) {
