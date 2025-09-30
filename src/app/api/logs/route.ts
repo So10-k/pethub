@@ -30,7 +30,10 @@ export async function POST(req: Request) {
     actorId = performedById
   }
 
+  // Client should always send timestamp in ISO format (includes timezone info)
+  // Server stores in UTC, client displays in local time
   const ts = timestamp ? new Date(timestamp) : new Date()
+  
   // Support a combined Pee/Poop option by creating two logs
   if (type === 'PEE_POOP') {
     const [pee, poop] = await Promise.all([

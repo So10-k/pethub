@@ -16,7 +16,12 @@ export default function PetQuickActions({ petId }: { petId: string }) {
     const res = await fetch('/api/logs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ petId, type, notes: notes || undefined }),
+      body: JSON.stringify({ 
+        petId, 
+        type, 
+        notes: notes || undefined,
+        timestamp: new Date().toISOString(), // Send client's local time as ISO
+      }),
     })
     if (!res.ok) {
       const data = await res.json().catch(() => ({}))
