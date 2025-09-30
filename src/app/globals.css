@@ -20,14 +20,34 @@
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  line-height: 1.6;
+/* iOS-style mobile PWA */
+@media (max-width: 768px) and (display-mode: standalone) {
+  body {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* iOS safe area padding */
+  .mobile-safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .mobile-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Hide desktop header on mobile PWA */
+  header {
+    display: none;
+  }
+  
+  /* Add bottom padding for tab bar */
+  main {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
 }
 
-/* Portal-style utilities */
 .portal-container {
   max-width: 64rem; /* ~1024px */
   margin-left: auto;

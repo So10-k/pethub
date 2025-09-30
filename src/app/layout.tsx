@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import SessionProvider from "@/components/session-provider";
 import PortalBanner from "@/components/portal-banner";
+import MobileTabBar from "@/components/mobile-tab-bar";
 import Script from 'next/script';
 
 const geistSans = Geist({
@@ -18,7 +19,20 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "petHub",
-  description: "Track your pets’ pees and poops with your family.",
+  description: "Track your pets' pees and poops with your family.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "petHub",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: "cover",
+  },
 };
 
 export default function RootLayout({
@@ -49,6 +63,7 @@ export default function RootLayout({
               petHub · Keep the pack in sync
             </div>
           </footer>
+          <MobileTabBar />
         </SessionProvider>
       </body>
     </html>

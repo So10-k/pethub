@@ -1,0 +1,26 @@
+{
+  "name": "petHub - Pet Care Tracker",
+  "short_name": "petHub",
+  "description": "Track your pet's activities, health, and care with your household",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/377391d6-48a5-4d61-a725-e5b9d74257b9.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["lifestyle", "health"],
+  "screenshots": []
+}
