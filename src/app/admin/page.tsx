@@ -39,6 +39,11 @@ export default async function AdminDashboard() {
           <StatCard label="Logs" value={logs} />
           <StatCard label="Invites" value={invites} />
         </div>
+        <div className="mt-4">
+          <Link href="/admin/maintenance" className="inline-block px-4 py-2 rounded bg-orange-600 text-white hover:bg-orange-700">
+            🔧 Maintenance Mode
+          </Link>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
