@@ -24,6 +24,33 @@ export default async function SettingsPage() {
       </div>
 
       <div className="portal-card mt-4">
+        <h2 className="portal-section-title">Household Details</h2>
+        <form action="/api/workspaces/update" method="post" className="mt-3 space-y-3">
+          <div>
+            <label className="block text-sm font-medium mb-1">Household Name</label>
+            <input
+              name="name"
+              defaultValue={workspace.name}
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Description (optional)</label>
+            <textarea
+              name="description"
+              defaultValue={workspace.description || ''}
+              rows={3}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">
+            Save Changes
+          </button>
+        </form>
+      </div>
+
+      <div className="portal-card mt-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="portal-section-title">Custom Log Types</h2>

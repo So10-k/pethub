@@ -24,20 +24,16 @@ export async function POST(req: Request) {
   const { name, species, breed } = body as { name?: string; species?: string; breed?: string }
   if (!name || !species) return NextResponse.json({ error: 'Name and species required' }, { status: 400 })
 
-  // Ensure a primary household (workspace) exists for user
-  let household = await prisma.workspace.findFirst({ 
+  // Find user's household
+  const household = await prisma.workspace.findFirst({ 
     where: { ownerId: userId },
     include: { pets: { select: { id: true } } },
   })
+  
   if (!household) {
-    household = await prisma.workspace.create({
-      data: {
-        name: 'My Household',
-        ownerId: userId,
-        members: { connect: { id: userId } },
-      },
-      include: { pets: { select: { id: true } } },
-    })
+    return NextResponse.json({ 
+      error: 'You must create a household first. Go to /create-household to get started.' 
+    }, { status: 400 })
   }
 
   // Check pet limit for free users (3 pets max)

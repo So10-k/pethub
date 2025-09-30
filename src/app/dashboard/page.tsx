@@ -13,6 +13,12 @@ export default async function DashboardRedirect() {
     select: { pets: { select: { id: true } } },
     orderBy: { createdAt: 'asc' },
   })
+
+  // If user has no household, redirect to create one
+  if (workspaces.length === 0) {
+    redirect('/create-household')
+  }
+
   const petId = workspaces.flatMap(w => w.pets)[0]?.id
   if (petId) redirect(`/pets/${petId}`)
   redirect('/pets/new')
