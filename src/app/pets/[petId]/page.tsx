@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { notFound, redirect } from 'next/navigation'
 import PetLogForm from '@/components/pet-log-form'
 import RemoveMemberButton from '@/components/remove-member-button'
+import { LocalTime } from '@/components/local-time'
 
 export default async function PetDashboard({ params }: { params: Promise<{ petId: string }> }) {
   const { petId } = await params
@@ -70,7 +71,7 @@ export default async function PetDashboard({ params }: { params: Promise<{ petId
             return (
               <li key={l.id} className="border rounded p-3 bg-white">
                 <div className="font-medium flex items-center gap-2"><span className="text-lg" aria-hidden>{icon}</span>{l.type}</div>
-                <div className="text-sm portal-muted">{new Date(l.timestamp).toLocaleString()}</div>
+                <div className="text-sm portal-muted"><LocalTime date={l.timestamp} /></div>
                 <div className="text-xs portal-muted">Logged by {l.user?.name || l.user?.email}{l.performedBy ? ` · Performed by ${l.performedBy.name || l.performedBy.email}` : ''}</div>
                 {l.notes && <div className="text-sm">{l.notes}</div>}
               </li>
