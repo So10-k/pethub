@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { redirect, notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
+import UserSearchModal from '@/components/admin/user-search-modal'
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
@@ -24,8 +25,13 @@ export default async function AdminDashboard() {
   return (
     <div className="portal-container">
       <div className="portal-card">
-        <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
-        <p className="portal-muted text-sm mt-1">Platform overview and tools</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
+            <p className="portal-muted text-sm mt-1">Platform overview and tools</p>
+          </div>
+          <UserSearchModal />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3 mt-4">
           <StatCard label="Users" value={users} />
           <StatCard label="Households" value={workspaces} />

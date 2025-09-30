@@ -124,6 +124,9 @@ export default async function AdminWorkspacePage({ params }: { params: { workspa
                 <option value="WALK">WALK</option>
                 <option value="PLAY">PLAY</option>
                 <option value="OTHER">OTHER</option>
+                {ws.customLogTypes.map(type => (
+                  <option key={type.id} value={type.name}>{type.icon} {type.name}</option>
+                ))}
               </select>
             </label>
             <input name="notes" placeholder="Notes (optional)" className="w-full border rounded px-2 py-1" />
