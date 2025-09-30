@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import RefreshButton from '@/components/refresh-button'
 
 export default async function MaintenancePage() {
   const maintenance = await prisma.maintenanceMode.findFirst({
@@ -36,12 +37,7 @@ export default async function MaintenancePage() {
           Thank you for your patience!
         </div>
 
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Refresh Page
-        </button>
+        <RefreshButton />
       </div>
     </div>
   )
