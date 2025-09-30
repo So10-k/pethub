@@ -4,7 +4,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import SessionProvider from "@/components/session-provider";
 import PortalBanner from "@/components/portal-banner";
-import MobileTabBar from "@/components/mobile-tab-bar";
+import MobileTabBarWrapper from "@/components/mobile-tab-bar-wrapper";
 import Script from 'next/script';
 
 const geistSans = Geist({
@@ -63,7 +63,7 @@ export default function RootLayout({
               petHub · Keep the pack in sync
             </div>
           </footer>
-          <MobileTabBar />
+          <MobileTabBarWrapper />
         </SessionProvider>
       </body>
     </html>

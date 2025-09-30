@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-export default function MobileTabBar() {
+export default function MobileTabBar({ isOwner, isAdmin }: { isOwner: boolean; isAdmin: boolean }) {
   const pathname = usePathname()
   const [isPWA, setIsPWA] = useState(false)
 
@@ -15,14 +15,34 @@ export default function MobileTabBar() {
   }, [])
 
   if (!isPWA) return null
+  
+  // Determine tabs based on user role
+  let tabs = []
 
-  const tabs = [
-    { href: '/dashboard', icon: '🏠', label: 'Home' },
-    { href: '/analytics', icon: '📊', label: 'Analytics' },
-    { href: '/pets/new', icon: '➕', label: 'Add' },
-    { href: '/settings', icon: '⚙️', label: 'Settings' },
-    { href: '/support', icon: '💬', label: 'Support' },
-  ]
+  // Admin gets admin-specific tabs
+  if (isAdmin) {
+    tabs = [
+      { href: '/dashboard', icon: '🏠', label: 'Home' },
+      { href: '/admin', icon: '👑', label: 'Admin' },
+      { href: '/admin/tickets', icon: '🎫', label: 'Tickets' },
+      { href: '/analytics', icon: '📊', label: 'Analytics' },
+      { href: '/settings', icon: '⚙️', label: 'Settings' },
+    ]
+  } else if (isOwner) {
+    // Owners get analytics and settings
+    tabs = [
+      { href: '/dashboard', icon: '🏠', label: 'Home' },
+      { href: '/analytics', icon: '📊', label: 'Analytics' },
+      { href: '/settings', icon: '⚙️', label: 'Settings' },
+      { href: '/support', icon: '💬', label: 'Support' },
+    ]
+  } else {
+    // Regular users get basic tabs
+    tabs = [
+      { href: '/dashboard', icon: '🏠', label: 'Home' },
+      { href: '/support', icon: '💬', label: 'Support' },
+    ]
+  }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-gray-200 mobile-safe-bottom z-50 md:hidden">
